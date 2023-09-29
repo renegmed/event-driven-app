@@ -12,7 +12,7 @@ const (
 
 	UnknownError JobErrorCode = 50000
 	FailedToAppendJobStatus
-	FailedToGeJobStatuses
+	FailedToGetJobStatuses
 
 	UnhealthService
 )

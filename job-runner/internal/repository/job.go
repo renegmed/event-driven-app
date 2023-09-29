@@ -22,7 +22,7 @@ type jobRepository struct {
 }
 
 func NewJobRepository(c config.DBConfig) JobRepository {
-	log.Println("...NewJobRepository() config.DBConfig:", c)
+	log.Println("...repository.NewJobRepository() config.DBConfig:", c)
 	return &jobRepository{config: c}
 }
 
@@ -54,8 +54,10 @@ func (r *jobRepository) GetStatuses(ctx context.Context, jobID string) ([]model.
 		return nil, err
 	}
 
+	log.Println("...repository.job.GetStatuses() jobID:", jobID)
 	var statuses []model.JobStatusDTO
 	if err = db.SelectContext(ctx, &statuses, "SELECT * FROM job_statuses($1)", jobID); err != nil {
+		log.Println("...repository.job.GetStatuses() SELECT * FROM job_statuses error:", err)
 		return nil, err
 	}
 

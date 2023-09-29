@@ -19,7 +19,10 @@ migrate-init:
 	 
 migrate-init-funcs:
 	migrate create -ext sql -dir migrations/postgres -seq create_replace_functions 
-	
+
+migrate-list-funcs:
+	migrate create -ext sql -dir migrations/postgres -seq create_list_functions 
+
 migrate_up:
 	migrate -database ${POSTGRES_URL} -path migrations/postgres up
 
@@ -30,3 +33,4 @@ migrate_drop:
 	migrate -database ${POSTGRES_URL} -path migrations/postgres -verbose drop  
 
 #-------------------------
+

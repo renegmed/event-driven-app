@@ -14,6 +14,10 @@ type RabbitMQConfig struct {
 	Password string
 }
 
+type PublisherConfig struct {
+	Exchange string
+}
+
 type DBConfig struct {
 	Host     string
 	Port     string
@@ -26,6 +30,7 @@ type Config struct {
 	Server   ServerConfig
 	RabbitMQ RabbitMQConfig
 	DB       DBConfig
+	Jobs     PublisherConfig
 }
 
 func LoadConfigFrom(in string) (Config, error) {

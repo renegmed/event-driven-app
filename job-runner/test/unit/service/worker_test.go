@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestCreate(t *testing.T) {
+func TestWorkerCreate(t *testing.T) {
 	data := []struct {
 		testName string
 		name     string
@@ -58,7 +58,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func TestGet(t *testing.T) {
+func TestWorkerGet(t *testing.T) {
 	data := []struct {
 		testName string
 		id       string
@@ -102,7 +102,7 @@ func TestGet(t *testing.T) {
 	}
 }
 
-func TestDelete(t *testing.T) {
+func TestWorkerDelete(t *testing.T) {
 	data := []struct {
 		testName string
 		id       string

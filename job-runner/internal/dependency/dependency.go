@@ -1,6 +1,7 @@
 package dependency
 
 import (
+	"job-runner-app/internal/broker"
 	"job-runner-app/internal/config"
 	"job-runner-app/internal/consumer"
 	"job-runner-app/internal/handler"
@@ -45,7 +46,11 @@ func NewDependency() (*Dependency, error) {
 	workerService := service.NewWorkerService(workerRepository)
 	workerHandler := handler.NewWorkerHandler(workerService)
 
-	ginEngine := server.NewEngine(workerHandler, healthHandler)
+	broker := broker.NewJobLaunchBroker(cfg.RabbitMQ, cfg.Jobs)
+	jobService := service.NewJobService(workerRepository, jobRepository, broker)
+	jobHandler := handler.NewJobHandler(jobService)
+
+	ginEngine := server.NewEngine(workerHandler, jobHandler, healthHandler)
 
 	return &Dependency{
 		CFG:              cfg,
