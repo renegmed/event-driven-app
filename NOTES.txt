@@ -1,0 +1,53 @@
+Status: wip 
+
+Title:  Building Event-Driven Go Microservices
+        Introduction to Event-Driven Architectur
+
+URL: https://medium.com/@dmytro.misik/building-event-driven-go-microservices-36cd524be35e
+
+
+The system consists of two parts:
+
+Job worker - the system reponsible for some particular background process;
+
+Job runner - the system responsible for launching different workers.
+
+
+Architecture:
+
+The most critical requirement for the system is that - the job runner should 
+launch a particular worker after a specific run API is called, a launch job.
+
+- background job can run for a long time;
+
+- job progress should be tracked somehow;
+
+- the job can be launched with a set of parameters;
+
+- the worker can be overloaded with launches and might not respond immediately;
+
+
+To develop new workers, it's necessary to:
+
+- create the queue and bind it to the jobs launch exchange;
+
+- implement consumer inside the worker;
+
+- unmarshal consumed message and launch a job with specific input;
+
+- implement job business logic;
+
+- periodically publish messages back to the runner to track progress.
+
+
+To develop a job runner, it's needed to:
+
+- design contracts for HTTP and RabbitMQ API;
+
+- implement HTTP API to register new workers;
+
+- implement HTTP API to launch worker; 
+
+- publish new RabbitMQ message on job launch;
+
+- consume job progress events.
