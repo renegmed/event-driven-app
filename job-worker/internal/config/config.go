@@ -2,13 +2,26 @@ package config
 
 import "github.com/spf13/viper"
 
+type RabbitMQConfig struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+}
+
+type PublisherConfig struct {
+	Exchange string
+}
+
 type SubscriberConfig struct {
 	Group string
 	Queue string
 }
 
 type Config struct {
-	Jobs SubscriberConfig
+	RabbitMQ  RabbitMQConfig
+	Jobs      SubscriberConfig
+	JobEvents PublisherConfig
 }
 
 func LoadConfigFrom(in string) (Config, error) {

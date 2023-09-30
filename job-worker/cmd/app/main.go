@@ -43,5 +43,5 @@ func main() {
 	log.Println("...consumer stopped")
 
 	<-ctx.Done()
-	log.Println("...gracefule shutdown")
+	log.Println("...graceful shutdown")
 }
