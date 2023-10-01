@@ -1,0 +1,19 @@
+server:
+  port: 4001
+  host: job-runner
+  
+db:
+  host: postgres 
+  port: 5432 
+  user: admin 
+  password: password123 
+  dbName: db 
+
+rabbitmq:
+  host: rabbitmq 
+  port: 5672
+  user: username 
+  password: password
+
+jobs:
+  exchange: jobs

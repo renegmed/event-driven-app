@@ -18,21 +18,21 @@ test_service_job:
 WORKER-ID := "bd72aa18-ae9a-4e83-b902-182658e16cba"
 
 create_worker:
-	curl -XPUT localhost:4000/workers/ -d '{"name": "John", "description": "line leader"}'
+	curl -XPUT localhost:4001/workers/ -d '{"name": "John", "description": "line leader"}'
 
 get_worker:
-	curl localhost:4000/workers/${WORKER-ID}
+	curl localhost:4001/workers/${WORKER-ID}
 
 delete_worker:
-	curl -XDELETE localhost:4000/workers/${WORKER-ID}
+	curl -XDELETE localhost:4001/workers/${WORKER-ID}
 
 #--------------------------------------
 
 launch_job:
-	curl -XPOST localhost:4000/jobs/ -d '{"worker_id":${WORKER-ID}, "input": {"test1":"Test 1", "test2":"Test 2"}}'
+	curl -XPOST localhost:4001/jobs/ -d '{"worker_id":${WORKER-ID}, "input": {"test1":"Test 1", "test2":"Test 2"}}'
 
 JOB-ID := "f66c41b7-991f-48d8-98e0-f670d34db2f6"
 
 get_job_status:
-	curl -XGET localhost:4000/jobs/${JOB-ID}/statuses
+	curl -XGET localhost:4001/jobs/${JOB-ID}/statuses
 

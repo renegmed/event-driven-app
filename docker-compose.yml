@@ -1,35 +1,42 @@
 version: "3"
 
 services:
-  # job-runner:
-  #   build:
-  #     context: ./go-job-runner
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   depends_on:
-  #     - postgres
-  #     - rabbitmq
-  #   ports:
-  #     - 4001:4001
-  #   environment:
-  #     - GIN_MODE=release
-  #   volumes:
-  #     - ./go-job-runner/docker.yml:/out/config.yml
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost:4001/health"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
+  job-runner:
+    container_name: job-runner
+    image: renegmed/job-runner
+    build:
+      context: ./job-runner
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - 4001:4001
+    networks:
+      - microservices
+    environment:
+      - GIN_MODE=release
+    volumes:
+      - ./job-runner/docker.yml:/config.yml
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # job-worker:
-  #   build:
-  #     context: ./go-job-worker
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   depends_on:
-  #     - rabbitmq
-  #   volumes:
-  #     - ./go-job-worker/docker.yml:/out/config.yml
+  job-worker:
+    container_name: job-worker
+    build:
+      context: ./job-worker
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - rabbitmq
+    networks:
+      - microservices
+    volumes:
+      - ./job-worker/docker.yml:/config.yml
 
   postgres:
     container_name: postgresql
