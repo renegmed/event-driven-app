@@ -17,11 +17,21 @@ test_service_job:
 
 WORKER-ID := "bd72aa18-ae9a-4e83-b902-182658e16cba"
 
+WORKER-ID-2 :="9fdd7d7e-7085-478a-b432-9903921e6309"
+
 create_worker:
 	curl -XPUT localhost:4001/workers/ -d '{"name": "John", "description": "line leader"}'
 
+create_worker_2:
+	curl -XPUT localhost:4001/workers/ -d '{"name": "Peter", "description": "line supervisor"}'
+
+
 get_worker:
 	curl localhost:4001/workers/${WORKER-ID}
+
+get_worker_2:
+	curl localhost:4001/workers/${WORKER-ID-2}
+	
 
 delete_worker:
 	curl -XDELETE localhost:4001/workers/${WORKER-ID}

@@ -17,3 +17,7 @@ rabbitmq:
 
 jobs:
   exchange: jobs
+  
+jobEvents:
+  group: job-events-local-consumer 
+  queue: jbo-events
