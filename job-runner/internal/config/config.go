@@ -18,6 +18,11 @@ type PublisherConfig struct {
 	Exchange string
 }
 
+type SubscriberConfig struct {
+	Group string
+	Queue string
+}
+
 type DBConfig struct {
 	Host     string
 	Port     string
@@ -27,10 +32,11 @@ type DBConfig struct {
 }
 
 type Config struct {
-	Server   ServerConfig
-	RabbitMQ RabbitMQConfig
-	DB       DBConfig
-	Jobs     PublisherConfig
+	Server    ServerConfig
+	RabbitMQ  RabbitMQConfig
+	DB        DBConfig
+	Jobs      PublisherConfig
+	JobEvents SubscriberConfig
 }
 
 func LoadConfigFrom(in string) (Config, error) {

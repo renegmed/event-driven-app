@@ -80,7 +80,7 @@ func (r *workerRepository) Delete(ctx context.Context, id string) (bool, error) 
 	var deletedId *string
 	err = dbConn.GetContext(ctx, &deletedId, "SELECT delete_worker($1)", id)
 
-	log.Println("...repository.worker.Delete() deletedId:", *deletedId)
+	log.Println("...repository.worker.Delete() deletedId:", deletedId)
 
 	return deletedId != nil && *deletedId == id, err
 }

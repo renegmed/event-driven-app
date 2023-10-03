@@ -29,7 +29,7 @@ type CreateWorkerResponse struct {
 }
 
 type DeleteWorkerResponse struct {
-	Delete bool `json:"deleted"`
+	Deleted bool `json:"deleted"`
 }
 
 type GetWorkerResponse struct {

@@ -90,6 +90,6 @@ func (h *workerHandler) Delete(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, model.DeleteWorkerResponse{
-		Delete: ok,
+		Deleted: ok,
 	})
 }

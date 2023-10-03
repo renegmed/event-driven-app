@@ -8,11 +8,18 @@ health:
 	curl localhost:4000/health
 
 test_service_worker:
-	go test -race -v -run=Worker ./test/unit/service
+	go test -race -v -run=Worker -count=1 ./test/unit/service
 
 test_service_job:
-	go test -race -v -run=Job ./test/unit/service
+	go test -race -v -run=Job -count=1 ./test/unit/service
 
+test_repository:
+	go test -race -v -run=Repository -count=1 ./test/integration/repository 
+
+test_e2e:
+	go test -race -v -count=1 ./test/e2e 
+
+	
 #---------------------------------------
 
 WORKER-ID := "bd72aa18-ae9a-4e83-b902-182658e16cba"
@@ -31,7 +38,7 @@ get_worker:
 
 get_worker_2:
 	curl localhost:4001/workers/${WORKER-ID-2}
-	
+
 
 delete_worker:
 	curl -XDELETE localhost:4001/workers/${WORKER-ID}

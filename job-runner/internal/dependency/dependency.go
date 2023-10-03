@@ -10,13 +10,20 @@ import (
 	"job-runner-app/internal/service"
 	"log"
 
+	pkgmodel "job-runner-app/pkg/model"
+
 	"github.com/gin-gonic/gin"
 )
 
 type Dependency struct {
-	CFG              config.Config
-	JobConsumer      consumer.Consumer
+	CFG         config.Config
+	JobConsumer consumer.Consumer
+
+	JobBroker broker.Broker[pkgmodel.JobLaunchMessage]
+
+	// -----------------
 	JobRepository    repository.JobRepository
+	JobService       service.JobService
 	HealthRepository repository.HealthRepository
 	HealthService    service.HealthService
 	// gin handlers
@@ -33,8 +40,6 @@ func NewDependency() (*Dependency, error) {
 
 	log.Println("...NewDependency() cfg:", cfg)
 
-	jobConsumer := consumer.NewJobStatusConsumer(cfg.RabbitMQ) // concrete rabbitMQConsumer
-
 	jobRepository := repository.NewJobRepository(cfg.DB)
 
 	healthRepository := repository.NewHealthRepository(cfg.DB)
@@ -46,16 +51,20 @@ func NewDependency() (*Dependency, error) {
 	workerService := service.NewWorkerService(workerRepository)
 	workerHandler := handler.NewWorkerHandler(workerService)
 
-	broker := broker.NewJobLaunchBroker(cfg.RabbitMQ, cfg.Jobs)
-	jobService := service.NewJobService(workerRepository, jobRepository, broker)
+	jobBroker := broker.NewJobLaunchBroker(cfg.RabbitMQ, cfg.Jobs)
+	jobService := service.NewJobService(workerRepository, jobRepository, jobBroker)
 	jobHandler := handler.NewJobHandler(jobService)
 
 	ginEngine := server.NewEngine(workerHandler, jobHandler, healthHandler)
 
+	jobConsumer := consumer.NewJobStatusConsumer(cfg.RabbitMQ, cfg.JobEvents, jobService) // concrete rabbitMQConsumer
+
 	return &Dependency{
 		CFG:              cfg,
 		JobConsumer:      jobConsumer,
+		JobBroker:        jobBroker,
 		JobRepository:    jobRepository,
+		JobService:       jobService,
 		HealthRepository: healthRepository,
 		GinEngine:        ginEngine,
 	}, nil
